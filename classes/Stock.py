@@ -18,9 +18,9 @@ class Stock:
         chain = self.data.option_chain(expiration_date)
         if export_chain:
             with open(f"{self.ticker.lower()}_call_option_chain.csv", "w", newline="") as file:
-                chain.calls.to_csv(file)
+                chain.calls.to_csv(file, index=False)
             with open(f"{self.ticker.lower()}_put_option_chain.csv", "w", newline="") as file:
-                chain.puts.to_csv(file)
+                chain.puts.to_csv(file, index=False)
         return chain.calls, chain.puts
 
 
