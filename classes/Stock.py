@@ -2,6 +2,10 @@ import yfinance as yf
 import csv
 import pandas as pd
 from Option import Option
+import math
+from scipy.stats import norm
+import numpy as np
+
 
 class Stock:
 
@@ -23,13 +27,24 @@ class Stock:
                 chain.calls.to_csv(file, index=False)
             with open(f"{self.ticker.lower()}_put_option_chain.csv", "w", newline="") as file:
                 chain.puts.to_csv(file, index=False)
-        return chain.calls, chain.puts
+        return expiration_date, chain.calls, chain.puts
     
 
-    def black_scholes_model(self, option: Option, call:bool=True):
-        pass
-        # if call:
-        #     self.data[""]
+    def black_scholes_model(self, option: Option, rate:float, call:bool=True):
+        S = self.get_current_price
+        K = option.strike
+        T = option.days_until_expiration / 365.0
+        r = r
+        sigma = option.implied_volatility
+        d1 = (math.log(S/K) + (r + sigma**2 / 2) * T) / (sigma * math.sqrt(T))
+        d2 = d1 - (sigma * math.sqrt(T))
+
+        if call:
+            return S * norm.cdf(d1) - K * math.exp(-r * T) * norm.cdf(d2)
+        else:
+            return K * math.exp(-r * T) * norm.cdf(-d2) - S * norm.cdf(-d1)
+
+        
 
     @property
     def get_current_price(self):
@@ -39,8 +54,34 @@ class Stock:
 
 
 msft = Stock(ticker="MSFT")
-print(msft.get_current_price)
-# msft_calls, msft_puts = msft.get_option_chain(expiration_index=0, export_chain=True)
-# print(msft_calls)
+expiration_date, msft_calls, msft_puts = msft.get_option_chain(expiration_index=0, export_chain=True)
+
+calls = []
+
+for _, row in msft_calls.iterrows():
+    option = Option(
+        contract_symbol=row["contractSymbol"],
+        last_trade_date=row["lastTradeDate"],
+        strike=row["strike"],
+        last_price=row["lastPrice"],
+        bid=row["bid"],
+        ask=row["ask"],
+        change=row["change"],
+        percent_change=row["percentChange"],
+        volume=row["volume"],
+        open_interest=row["openInterest"],
+        implied_volatility=row["impliedVolatility"],
+        in_the_money=row["inTheMoney"],
+        contract_size=row["contractSize"],
+        currency=row["currency"],
+        expiration_date=expiration_date,
+        option_type = "call")
+    
+    calls.append(option)
+    
+
+
+for option in calls:
+    print(option)
 
 

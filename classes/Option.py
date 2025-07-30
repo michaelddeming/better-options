@@ -19,7 +19,11 @@ class Option:
                 in_the_money: bool,
                 contract_size: str,
                 currency: str,
+                expiration_date: str,
+                option_type: str,
                 ):
+
+                # yfinance vars
                 self.contract_symbol = contract_symbol
                 self.last_trade_date = last_trade_date
                 self.strike = strike
@@ -34,4 +38,20 @@ class Option:
                 self.in_the_money = in_the_money
                 self.contract_size = contract_size
                 self.currency = currency
-        
+
+                # custom vars
+                self.expiration_date = expiration_date
+                self.option_type = option_type
+
+                # computed instance vars
+                self.days_to_expiration = self.compute_days_until_expiration()
+
+                print(f"{self.option_type.title()} succefully generated!")
+
+    def __str__(self):
+            return f"{self.contract_symbol}"
+
+    def compute_days_until_expiration(self):
+            return (datetime.strptime(self.expiration_date, "%Y-%m-%d") - datetime.today()).days
+            
+    
