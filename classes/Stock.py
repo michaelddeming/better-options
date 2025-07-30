@@ -1,6 +1,8 @@
 import yfinance as yf
 import csv
 import pandas as pd
+from Option import Option
+
 class Stock:
 
     def __init__(self, ticker: str):
@@ -22,10 +24,23 @@ class Stock:
             with open(f"{self.ticker.lower()}_put_option_chain.csv", "w", newline="") as file:
                 chain.puts.to_csv(file, index=False)
         return chain.calls, chain.puts
+    
+
+    def black_scholes_model(self, option: Option, call:bool=True):
+        pass
+        # if call:
+        #     self.data[""]
+
+    @property
+    def get_current_price(self):
+        return self.data.info["regularMarketPrice"]
+
+
 
 
 msft = Stock(ticker="MSFT")
-msft_calls, msft_puts = msft.get_option_chain(expiration_index=0, export_chain=True)
-print(msft_calls)
+print(msft.get_current_price)
+# msft_calls, msft_puts = msft.get_option_chain(expiration_index=0, export_chain=True)
+# print(msft_calls)
 
 
