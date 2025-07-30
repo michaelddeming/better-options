@@ -72,8 +72,8 @@ class Stock:
     def black_scholes_model(self, option: Option, rate:float, call:bool=True):
         S = self.get_current_price
         K = option.strike
-        T = option.days_until_expiration / 365.0
-        r = r
+        T = option.days_to_expiration / 365.0
+        r = rate
         sigma = option.implied_volatility
         d1 = (math.log(S/K) + (r + sigma**2 / 2) * T) / (sigma * math.sqrt(T))
         d2 = d1 - (sigma * math.sqrt(T))

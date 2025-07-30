@@ -44,14 +44,14 @@ class Option:
                 self.option_type = option_type
 
                 # computed instance vars
-                self.days_to_expiration = self.compute_days_until_expiration()
+                self.days_to_expiration = self.compute_days_to_expiration()
 
                 print(f"{self.option_type.title()} succefully generated!")
 
     def __str__(self):
             return f"{self.contract_symbol}"
 
-    def compute_days_until_expiration(self):
+    def compute_days_to_expiration(self):
             return (datetime.strptime(self.expiration_date, "%Y-%m-%d") - datetime.today()).days
             
     
