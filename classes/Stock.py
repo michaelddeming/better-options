@@ -83,7 +83,7 @@ class Stock:
             ) as file:
                 chain.puts.to_csv(file, index=False)
         print(atm_call_index)
-        return expiration_date, calls if limit is None else calls[atm_call_index - limit:atm_call_index + limit], puts if limit is None else puts[atm_put_index - limit:atm_put_index + limit]
+        return expiration_date, calls if limit is None else calls[max(0,atm_call_index - limit):min(atm_call_index + limit, len(calls))], puts if limit is None else puts[max(0, atm_put_index - limit):min(atm_put_index + limit, len(puts))]
 
     def black_scholes_model(self, option: Option, rate: float, call: bool = True):
         S = self.get_current_price
