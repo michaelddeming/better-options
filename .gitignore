@@ -1,4 +1,14 @@
-# pycache
+# Byte-compiled / cache
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Environment variables / secrets
+.env
+.env.*
