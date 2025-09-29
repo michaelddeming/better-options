@@ -8,7 +8,7 @@ load_dotenv()
 
 key = os.getenv("ALPHA_KEY")
 
-stock = Stock(ticker="tsla")
+stock = Stock(ticker="elf")
 stock.set_key(key)
 
 

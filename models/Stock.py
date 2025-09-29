@@ -63,34 +63,34 @@ class Stock:
                 print(f"\nFound {len(found_recent)} Insider {self.ticker.upper()} Transactions (<=31 Days)")
                 sold_cost = 0
                 shares_sold = 0
+                sold_count = 0
 
                 shares_acq = 0
                 acq_cost = 0
-
+                acq_count = 0
                 for recent_insider_transaction in found_recent:
 
                     transaction = InsiderTransaction(**recent_insider_transaction)
                     if transaction.acquisition_or_disposal == "D":
                         shares_sold += transaction.shares
                         sold_cost += (transaction.shares * transaction.share_price)
+                        sold_count += 1
                     else:
                         shares_acq += transaction.shares
                         acq_cost += (transaction.shares * transaction.share_price)
+                        acq_count += 1
 
                 sold_avg = sold_cost / shares_sold if shares_sold else 0
                 acq_avg = acq_cost / shares_acq if shares_acq else 0
 
-                print(f"\nSold: {shares_sold:.2f} @ ~${sold_avg:.2f}")
-                print(f"\nAcquired: {shares_acq:.2f} @ ~${acq_avg:.2f}")
+                print(f"\nSold: {sold_count} Total Insider Transactions -> {shares_sold:.2f} Shares @ ~${sold_avg:.2f}")
+                print(f"\nAcquired: {acq_count} Total Insider Transactions -> {shares_acq:.2f} Shares @ ~${acq_avg:.2f}")
 
                 delta = shares_acq - shares_sold
 
-                if delta > 0:
-                    print(f"\nPositive {delta:.2f} Net Change for {self.ticker.upper()} Insider Transactions in {days} Days.")
-                elif delta < 0:
-                    print(f"\nNegative {delta:.2f} Net Change for {self.ticker.upper()} Insider Transactions in {days} Days.")
-                else:
-                    print(f"\n{delta:.2f} Net Change for {self.ticker.upper()} Insider Transactions in {days} Days.")
+               
+                print(f"\n{delta:.2f} Net Share Change for {self.ticker.upper()} Insider Transactions in Past {days} Days.")
+               
             else:
                 print(f"\nFound 0 Insider Transactions (<=31 Days)")
                 
